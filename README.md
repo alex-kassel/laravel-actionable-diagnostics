@@ -1,8 +1,9 @@
 # Laravel Actionable Diagnostics
 
-[![Latest Stable Version](https://poser.pugx.org/alex-kassel/laravel-actionable-diagnostics/v)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![License](https://poser.pugx.org/alex-kassel/laravel-actionable-diagnostics/license)](LICENSE)
-[![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue.svg)](https://php.net)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/alex-kassel/laravel-actionable-diagnostics/packagist.yml?branch=main&label=tests&style=flat-square)](https://github.com/alex-kassel/laravel-actionable-diagnostics/actions)
+[![Total Downloads](https://img.shields.io/packagist/dt/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
+[![License](https://img.shields.io/packagist/l/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](LICENSE)
 
 Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework for PHP 8.2+ and Laravel applications.
 
