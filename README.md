@@ -1,14 +1,18 @@
-# Laravel Actionable Diagnostics
+<div align="center">
 
-[![Audited by Laravel Package Audit](https://img.shields.io/badge/Audited%20by-Laravel%20Package%20Audit-10b981?style=for-the-badge&logo=shield)](RELEASE-GATE.md)
-[![Latest Version](https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics?style=for-the-badge&logo=packagist&logoColor=white&color=f59e0b)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![Laravel](https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x%20%7C%2013.x-ff2d20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/packagist/dependency-v/alex-kassel/laravel-actionable-diagnostics/php?style=for-the-badge&logo=php&logoColor=white&color=777bb4)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![PHPStan](https://img.shields.io/badge/PHPStan-Level%20Max-8b5cf6?style=for-the-badge&logo=php&logoColor=white)](RELEASE-GATE.md)
-[![Downloads](https://img.shields.io/packagist/dt/alex-kassel/laravel-actionable-diagnostics?style=for-the-badge&logo=packagist&logoColor=white&color=0284c7)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![License](https://img.shields.io/github/license/alex-kassel/laravel-actionable-diagnostics?style=for-the-badge&color=0d9488)](LICENSE)
+# 🩺 Laravel Actionable Diagnostics
 
-Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework for PHP 8.2+ and Laravel applications.
+**Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework for PHP 8.2+ and Laravel applications.**
+
+<p align="center">
+  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/Audited%20by-Laravel%20Package%20Audit-10b981?logo=shield" alt="Audit Verified"></a>
+  <a href="https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics"><img src="https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics?color=f59e0b&logo=packagist&logoColor=white" alt="Latest Version"></a>
+  <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11%20%7C%2012%20%7C%2013-ff2d20?logo=laravel&logoColor=white" alt="Laravel Support"></a>
+  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-%5E8.2-777bb4?logo=php&logoColor=white" alt="PHP Support"></a>
+  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/PHPStan-Level%20Max-8b5cf6?logo=php&logoColor=white" alt="PHPStan"></a>
+</p>
+
+</div>
 
 ---
 
