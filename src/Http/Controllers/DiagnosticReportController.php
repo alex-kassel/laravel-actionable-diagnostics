@@ -15,6 +15,7 @@ class DiagnosticReportController extends Controller
 {
     public function report(Request $request, DiagnosticsManager $manager): JsonResponse
     {
+        /** @var array<string, mixed> $payload */
         $payload = $request->validate([
             'project_slug' => 'required|string',
             'diagnostic_code' => 'required|string',

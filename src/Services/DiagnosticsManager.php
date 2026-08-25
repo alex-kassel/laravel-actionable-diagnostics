@@ -11,7 +11,6 @@ use AlexKassel\LaravelActionableDiagnostics\Contracts\DiagnosticBufferInterface;
 use AlexKassel\LaravelActionableDiagnostics\Contracts\SensitiveDataMaskerInterface;
 use AlexKassel\LaravelActionableDiagnostics\Contracts\WebhookDispatcherInterface;
 use AlexKassel\LaravelActionableDiagnostics\DTOs\ActionableDiagnosticDTO;
-use AlexKassel\LaravelActionableDiagnostics\Enums\DiagnosticSourceEnum;
 use AlexKassel\LaravelActionableDiagnostics\Enums\ErrorSeverityEnum;
 use AlexKassel\LaravelActionableDiagnostics\Events\DiagnosticReported;
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
@@ -64,6 +63,10 @@ class DiagnosticsManager
         $this->processDiagnostic($dto, true);
     }
 
+    /**
+     * @param  array<string, mixed>  $context
+     * @param  array<int, string>  $remediationSteps
+     */
     public function recoverable(
         string $code,
         string $message,
@@ -85,6 +88,9 @@ class DiagnosticsManager
         $this->processDiagnostic($dto, false);
     }
 
+    /**
+     * @param  array<string, mixed>  $context
+     */
     public function operational(string $code, string $message, array $context = []): void
     {
         $dto = ActionableDiagnosticDTO::fromArray([
@@ -132,6 +138,7 @@ class DiagnosticsManager
             if ($this->buffer->count() >= $this->bufferMaxItems) {
                 $this->flushBuffer();
             }
+
             return;
         }
 

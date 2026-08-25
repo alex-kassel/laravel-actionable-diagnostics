@@ -19,6 +19,11 @@ class DiagnosticsManagerTest extends TestCase
         ];
     }
 
+    protected function defineEnvironment($app): void
+    {
+        config()->set('actionable-diagnostics.routes.enabled', true);
+    }
+
     public function test_facade_records_diagnostic_and_dispatches_laravel_event(): void
     {
         Event::fake();

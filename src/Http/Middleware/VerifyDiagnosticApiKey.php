@@ -14,19 +14,30 @@ class VerifyDiagnosticApiKey
     {
         $configuredKey = config('actionable-diagnostics.api_key');
 
-        if (empty($configuredKey)) {
-            return $next($request);
+        if (! is_string($configuredKey) || $configuredKey === '') {
+            /** @var Response $response */
+            $response = $next($request);
+
+            return $response;
         }
 
-        $providedKey = $request->header('X-Diagnostic-Api-Key') ?? $request->bearerToken();
+        $header = $request->header('X-Diagnostic-Api-Key');
+        $firstHeader = is_array($header) ? reset($header) : $header;
+        $headerKey = is_string($firstHeader) ? $firstHeader : '';
 
-        if (empty($providedKey) || ! hash_equals($configuredKey, $providedKey)) {
+        $bearerKey = $request->bearerToken();
+        $providedKey = $headerKey !== '' ? $headerKey : (is_string($bearerKey) ? $bearerKey : '');
+
+        if ($providedKey === '' || ! hash_equals($configuredKey, $providedKey)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unauthorized diagnostic API token',
             ], 401);
         }
 
-        return $next($request);
+        /** @var Response $response */
+        $response = $next($request);
+
+        return $response;
     }
 }

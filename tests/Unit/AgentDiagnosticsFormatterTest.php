@@ -12,7 +12,7 @@ class AgentDiagnosticsFormatterTest extends TestCase
 {
     public function test_it_formats_markdown_alert(): void
     {
-        $formatter = new AgentDiagnosticsFormatter();
+        $formatter = new AgentDiagnosticsFormatter;
         $dto = ActionableDiagnosticDTO::fromArray([
             'diagnostic_code' => 'ERR_CONFIG',
             'severity' => 'FATAL',

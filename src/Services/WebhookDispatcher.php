@@ -7,19 +7,24 @@ namespace AlexKassel\LaravelActionableDiagnostics\Services;
 use AlexKassel\LaravelActionableDiagnostics\Contracts\WebhookDispatcherInterface;
 use AlexKassel\LaravelActionableDiagnostics\DTOs\ActionableDiagnosticDTO;
 use AlexKassel\LaravelActionableDiagnostics\DTOs\AggregatedDiagnosticSummaryDTO;
-use Symfony\Component\HttpClient\HttpClient;
+use Illuminate\Support\Facades\Http;
 use Throwable;
 
 class WebhookDispatcher implements WebhookDispatcherInterface
 {
     /** @var array<int, string> */
     protected array $urls;
+
     protected int $timeout;
+
     protected bool $enabled;
 
+    /**
+     * @param  array<int, string>  $urls
+     */
     public function __construct(array $urls = [], int $timeout = 5, bool $enabled = true)
     {
-        $this->urls = array_values(array_filter($urls));
+        $this->urls = array_values(array_filter($urls, fn (string $url) => $url !== ''));
         $this->timeout = $timeout;
         $this->enabled = $enabled && ! empty($this->urls);
     }
@@ -48,18 +53,20 @@ class WebhookDispatcher implements WebhookDispatcherInterface
         ]);
     }
 
+    /**
+     * @param  array<string, mixed>  $payload
+     */
     private function postPayload(array $payload): bool
     {
-        $client = HttpClient::create(['timeout' => $this->timeout]);
         $success = true;
 
         foreach ($this->urls as $url) {
             try {
-                $response = $client->request('POST', $url, [
-                    'json' => $payload,
-                    'headers' => ['User-Agent' => 'AlexKassel-LaravelActionableDiagnostics/1.0'],
-                ]);
-                if ($response->getStatusCode() >= 400) {
+                $response = Http::timeout($this->timeout)
+                    ->withHeaders(['User-Agent' => 'AlexKassel-LaravelActionableDiagnostics/1.0'])
+                    ->post($url, $payload);
+
+                if (! $response->successful()) {
                     $success = false;
                 }
             } catch (Throwable) {

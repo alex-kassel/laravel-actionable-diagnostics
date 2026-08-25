@@ -9,7 +9,7 @@ interface SensitiveDataMaskerInterface
     /**
      * Recursively mask sensitive key-value pairs in arrays.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     public function mask(array $data): array;

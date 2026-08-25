@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -7,7 +9,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'project_slug' => env('DIAGNOSTICS_PROJECT_SLUG', 'default-app'),
-    'environment'  => env('APP_ENV', 'production'),
+    'environment' => env('APP_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -18,13 +20,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | HTTP Ingestion Routes
+    |--------------------------------------------------------------------------
+    */
+    'routes' => [
+        'enabled' => env('ACTIONABLE_DIAGNOSTICS_ROUTES_ENABLED', false),
+        'prefix' => env('ACTIONABLE_DIAGNOSTICS_ROUTES_PREFIX', 'api/diagnostics'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Event Aggregation Buffer Configuration
     |--------------------------------------------------------------------------
     */
     'buffer' => [
-        'enabled'              => env('DIAGNOSTICS_BUFFER_ENABLED', true),
-        'driver'               => env('DIAGNOSTICS_BUFFER_DRIVER', 'array'),
-        'max_items'            => (int) env('DIAGNOSTICS_BUFFER_MAX_ITEMS', 100),
+        'enabled' => env('DIAGNOSTICS_BUFFER_ENABLED', true),
+        'driver' => env('DIAGNOSTICS_BUFFER_DRIVER', 'array'),
+        'max_items' => (int) env('DIAGNOSTICS_BUFFER_MAX_ITEMS', 100),
         'max_lifetime_seconds' => (int) env('DIAGNOSTICS_BUFFER_MAX_LIFETIME', 300),
     ],
 
@@ -34,9 +46,9 @@ return [
     |--------------------------------------------------------------------------
     */
     'masking' => [
-        'enabled'        => true,
+        'enabled' => true,
         'redaction_text' => '***REDACTED***',
-        'keys'           => [
+        'keys' => [
             'password', 'pass', 'secret', 'bearer', 'token',
             'api_key', 'authorization', 'credit_card', 'ssn',
             'private_key', 'cookie', 'db_password',
@@ -50,7 +62,7 @@ return [
     */
     'webhooks' => [
         'enabled' => env('DIAGNOSTICS_WEBHOOK_ENABLED', false),
-        'urls'    => array_filter(explode(',', env('DIAGNOSTICS_WEBHOOK_URLS', ''))),
+        'urls' => array_values(array_filter(explode(',', (string) env('DIAGNOSTICS_WEBHOOK_URLS', '')))),
         'timeout' => (int) env('DIAGNOSTICS_WEBHOOK_TIMEOUT', 5),
     ],
 ];

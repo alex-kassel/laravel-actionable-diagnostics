@@ -11,9 +11,13 @@ trait HasActionableRemediation
 {
     /** @var array<int, string> */
     protected array $remediationSteps = [];
+
     protected string $agentInstructions = '';
+
     protected string $diagnosticCode = 'ERR_CUSTOM_ACTIONABLE_EXCEPTION';
+
     protected ErrorSeverityEnum $severity = ErrorSeverityEnum::RECOVERABLE;
+
     /** @var array<string, mixed> */
     protected array $diagnosticContext = [];
 
@@ -27,6 +31,9 @@ trait HasActionableRemediation
         return $this->severity;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getRemediationSteps(): array
     {
         return $this->remediationSteps;
@@ -37,6 +44,9 @@ trait HasActionableRemediation
         return $this->agentInstructions;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDiagnosticContext(): array
     {
         return $this->diagnosticContext;

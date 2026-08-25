@@ -12,7 +12,9 @@ class DiagnosticBufferEngine implements DiagnosticBufferInterface
 {
     /** @var array<string, array<int, ActionableDiagnosticDTO>> */
     protected array $buffer = [];
+
     protected int $maxItems;
+
     protected int $maxLifetimeSeconds;
 
     public function __construct(int $maxItems = 100, int $maxLifetimeSeconds = 300)

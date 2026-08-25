@@ -11,16 +11,24 @@ use AlexKassel\LaravelActionableDiagnostics\Enums\ErrorSeverityEnum;
 use Exception;
 use Throwable;
 
-abstract class BaseActionableException extends Exception implements ActionableExceptionInterface, ActionableDiagnosticInterface
+abstract class BaseActionableException extends Exception implements ActionableDiagnosticInterface, ActionableExceptionInterface
 {
     /** @var array<int, string> */
     protected array $remediationSteps = [];
+
     protected string $agentInstructions = '';
+
     protected string $diagnosticCode = 'ERR_ACTIONABLE_EXCEPTION';
+
     protected ErrorSeverityEnum $severity = ErrorSeverityEnum::FATAL;
+
     /** @var array<string, mixed> */
     protected array $diagnosticContext = [];
 
+    /**
+     * @param  array<string, mixed>  $context
+     * @param  array<int, string>  $remediationSteps
+     */
     public function __construct(
         string $message = '',
         int $code = 0,
@@ -52,6 +60,9 @@ abstract class BaseActionableException extends Exception implements ActionableEx
         return $this->severity;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getRemediationSteps(): array
     {
         return $this->remediationSteps;
@@ -62,6 +73,9 @@ abstract class BaseActionableException extends Exception implements ActionableEx
         return $this->agentInstructions;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDiagnosticContext(): array
     {
         return $this->diagnosticContext;

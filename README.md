@@ -1,9 +1,12 @@
 # Laravel Actionable Diagnostics
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/alex-kassel/laravel-actionable-diagnostics/packagist.yml?branch=main&label=tests&style=flat-square)](https://github.com/alex-kassel/laravel-actionable-diagnostics/actions)
-[![Total Downloads](https://img.shields.io/packagist/dt/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
-[![License](https://img.shields.io/packagist/l/alex-kassel/laravel-actionable-diagnostics.svg?style=flat-square)](LICENSE)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics?style=for-the-badge&color=0284c7)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
+[![PHP Version](https://img.shields.io/badge/php-^8.2-0284c7?style=for-the-badge)](https://php.net)
+[![Laravel Version](https://img.shields.io/badge/laravel-11.x%20%7C%2012.x%20%7C%2013.x-0284c7?style=for-the-badge)](https://laravel.com)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/alex-kassel/laravel-actionable-diagnostics/packagist.yml?branch=main&label=tests&style=for-the-badge&color=16a34a)](https://github.com/alex-kassel/laravel-actionable-diagnostics/actions)
+[![Audit Status](https://img.shields.io/badge/audit-verified-16a34a?style=for-the-badge)](RELEASE-GATE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/alex-kassel/laravel-actionable-diagnostics?style=for-the-badge&color=d97706)](https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics)
+[![License](https://img.shields.io/badge/license-MIT-0d9488?style=for-the-badge)](LICENSE)
 
 Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework for PHP 8.2+ and Laravel applications.
 
@@ -14,9 +17,16 @@ Multichannel diagnostic event engine, actionable exception taxonomy, event buffe
 * **Single-Line Developer DX:** Clean convenience facade (`Diagnostics::fatal()`, `Diagnostics::recoverable()`, `Diagnostics::operational()`, `Diagnostics::record($dto)`).
 * **Actionable Error & Event Taxonomy:** Machine-readable diagnostic codes, severity levels (`FATAL`, `RECOVERABLE`, `OPERATIONAL`), human remediation steps, and AI resolution prompts.
 * **Event Aggregation & Summary Flushing:** In-memory event buffering to prevent log spam, flushing aggregated summary reports on process completion or item threshold.
-* **Dual Ingestion & Dispatch:** Local in-process PHP invocation AND remote REST API (`POST /api/diagnostics/report`), dispatching to Monolog PSR-3 log channels, Laravel Events, and HTTP POST Webhooks.
+* **Dual Ingestion & Dispatch:** Local in-process PHP invocation and optional remote REST API (`POST /api/diagnostics/report`), dispatching to Monolog PSR-3 log channels, Laravel Events, and HTTP POST Webhooks.
 * **Sensitive Data Masking:** Automatic recursive redaction of credentials, tokens, and private keys across log files and webhook payloads.
 * **AI Agent Friendly Markdown Output:** Formats diagnostic alerts into structured GitHub Markdown blocks (`> [!CAUTION]`) with clear resolution instructions.
+
+---
+
+## Requirements
+
+* **PHP:** ^8.2 (tested on 8.2, 8.3, 8.4)
+* **Laravel Framework:** ^10.0 || ^11.0 || ^12.0 || ^13.0
 
 ---
 
@@ -38,72 +48,91 @@ php artisan vendor:publish --tag="actionable-diagnostics-config"
 
 ---
 
-## Usage Examples
+## Configuration
 
-### 1. Single-Line Developer API
+The published `config/actionable-diagnostics.php` configuration file allows fine-tuning buffer sizes, webhook targets, API keys, and masking keys:
+
+```php
+return [
+    'project_slug' => env('DIAGNOSTICS_PROJECT_SLUG', 'default-app'),
+    'environment'  => env('APP_ENV', 'production'),
+    'api_key'      => env('DIAGNOSTICS_API_KEY', null),
+
+    'routes' => [
+        'enabled' => env('ACTIONABLE_DIAGNOSTICS_ROUTES_ENABLED', false),
+        'prefix'  => env('ACTIONABLE_DIAGNOSTICS_ROUTES_PREFIX', 'api/diagnostics'),
+    ],
+
+    'buffer' => [
+        'enabled'              => env('DIAGNOSTICS_BUFFER_ENABLED', true),
+        'max_items'            => (int) env('DIAGNOSTICS_BUFFER_MAX_ITEMS', 100),
+        'max_lifetime_seconds' => (int) env('DIAGNOSTICS_BUFFER_MAX_LIFETIME', 300),
+    ],
+
+    'masking' => [
+        'enabled'        => true,
+        'redaction_text' => '***REDACTED***',
+        'keys'           => [
+            'password', 'pass', 'secret', 'bearer', 'token',
+            'api_key', 'authorization', 'credit_card', 'ssn',
+            'private_key', 'cookie', 'db_password',
+        ],
+    ],
+
+    'webhooks' => [
+        'enabled' => env('DIAGNOSTICS_WEBHOOK_ENABLED', false),
+        'urls'    => array_values(array_filter(explode(',', (string) env('DIAGNOSTICS_WEBHOOK_URLS', '')))),
+        'timeout' => (int) env('DIAGNOSTICS_WEBHOOK_TIMEOUT', 5),
+    ],
+];
+```
+
+---
+
+## Quick Start
+
+### 1. Recording Recoverable / Operational Events
 
 ```php
 use AlexKassel\LaravelActionableDiagnostics\Facades\Diagnostics;
 
-// Report a fatal exception with actionable remediation
-Diagnostics::fatal($exception);
-
-// Record a recoverable operational anomaly
 Diagnostics::recoverable(
-    code: 'ERR_SPIDER_ITEM_TIMEOUT',
-    message: 'Item detail page timed out',
-    context: ['url' => $url, 'spider' => 'spider-one'],
+    code: 'ERR_RATE_LIMIT_EXCEEDED',
+    message: 'Upstream vendor API returned 429 Too Many Requests',
+    context: ['vendor' => 'stripe', 'retry_after_seconds' => 60],
     remediationSteps: [
-        'Check target server availability',
-        'Verify proxy pool health',
+        'Check upstream vendor status page',
+        'Verify exponential backoff settings in config/services.php',
     ],
-    agentInstructions: 'If count > 50, check proxy pool health or increase timeout.'
-);
-
-// Record an operational event (automatically buffered)
-Diagnostics::operational(
-    code: 'WARN_CONTENT_SIZE_ANOMALY',
-    message: 'Content size changed without fingerprint change',
-    context: ['external_id' => '12345', 'delta_bytes' => 4500]
+    agentInstructions: 'Inspect rate limit headers and apply backoff multiplier.'
 );
 ```
 
-### 2. Creating Custom Actionable Exceptions
-
-Extend `BaseActionableException` or use the `HasActionableRemediation` trait:
+### 2. Actionable Exceptions
 
 ```php
 use AlexKassel\LaravelActionableDiagnostics\Exceptions\BaseActionableException;
 use AlexKassel\LaravelActionableDiagnostics\Enums\ErrorSeverityEnum;
 
-class DatabaseConnectionFailedException extends BaseActionableException
+class UpstreamServiceUnavailableException extends BaseActionableException
 {
-    protected string $diagnosticCode = 'ERR_DATABASE_CONNECTION_FAILED';
+    protected string $diagnosticCode = 'ERR_UPSTREAM_UNAVAILABLE';
     protected ErrorSeverityEnum $severity = ErrorSeverityEnum::FATAL;
     protected array $remediationSteps = [
-        'Verify database container status',
-        'Check DB_HOST and DB_PORT in .env',
+        'Verify network connectivity and firewall rules',
+        'Check DNS resolution for api.vendor.com',
     ];
-    protected string $agentInstructions = '1. Run docker ps to check DB container. 2. Verify .env credentials.';
+    protected string $agentInstructions = 'Review upstream connection logs and test endpoint with curl.';
 }
 ```
 
-### 3. Remote REST API Ingestion
+```php
+use AlexKassel\LaravelActionableDiagnostics\Facades\Diagnostics;
 
-Send diagnostic payloads from remote applications via `POST /api/diagnostics/report`:
-
-```json
-{
-  "project_slug": "car-subscription-catalog",
-  "diagnostic_code": "ERR_DATABASE_CONNECTION_FAILED",
-  "severity": "FATAL",
-  "message": "Could not connect to database host 'db.internal'",
-  "remediation_steps": [
-    "Verify MySQL container status",
-    "Check DB_HOST in .env"
-  ],
-  "agent_instructions": "1. Run docker ps to check MySQL. 2. Verify .env credentials.",
-  "context": { "host": "db.internal", "port": 3306 }
+try {
+    // Risky upstream call
+} catch (UpstreamServiceUnavailableException $e) {
+    Diagnostics::fatal($e);
 }
 ```
 
@@ -111,19 +140,27 @@ Send diagnostic payloads from remote applications via `POST /api/diagnostics/rep
 
 ## Testing
 
-Run the test suite via Composer:
+Run unit and integration test suites:
 
 ```bash
-composer test
+php artisan test -c packages/alex-local/laravel-actionable-diagnostics/phpunit.xml
 ```
 
-Or invoke PHPUnit directly:
+Run static analysis:
 
 ```bash
-vendor/bin/phpunit
+vendor/bin/phpstan analyse packages/alex-local/laravel-actionable-diagnostics/src --level=max
 ```
 
 ---
+
+## Changelog
+
+Please see [CHANGELOG.md](CHANGELOG.md) for more information on what has changed recently.
+
+## Security Vulnerabilities
+
+Please review [Security Policies](https://github.com/alex-kassel/laravel-actionable-diagnostics/security/policy) on how to report vulnerabilities.
 
 ## License
 

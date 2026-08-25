@@ -12,7 +12,7 @@ class DiagnosticBufferEngineTest extends TestCase
 {
     public function test_it_buffers_and_flushes_aggregated_summary(): void
     {
-        $buffer = new DiagnosticBufferEngine();
+        $buffer = new DiagnosticBufferEngine;
 
         $dto1 = ActionableDiagnosticDTO::fromArray([
             'diagnostic_code' => 'WARN_TIMEOUT',
