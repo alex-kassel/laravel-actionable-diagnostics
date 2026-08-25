@@ -2,17 +2,25 @@
 
 # 🩺 Laravel Actionable Diagnostics
 
-**Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework for PHP 8.2+ and Laravel applications.**
+### Multichannel diagnostic event engine, actionable exception taxonomy, event buffering, and AI agent remediation framework
+
+[Installation](#installation) • [Configuration](#configuration) • [Quick Start](#quick-start) • [Release Gate](RELEASE-GATE.md) • [Changelog](CHANGELOG.md)
+
+<br>
 
 <p align="center">
-  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/Audited%20by-Laravel%20Package%20Audit-10b981?logo=shield" alt="Audit Verified"></a>
+  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/Audit-Verified-10b981?logo=shield" alt="Audit Verified"></a>
   <a href="https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics"><img src="https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics?color=f59e0b&logo=packagist&logoColor=white" alt="Latest Version"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11%20%7C%2012%20%7C%2013-ff2d20?logo=laravel&logoColor=white" alt="Laravel Support"></a>
-  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-%5E8.2-777bb4?logo=php&logoColor=white" alt="PHP Support"></a>
-  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/PHPStan-Level%20Max-8b5cf6?logo=php&logoColor=white" alt="PHPStan"></a>
+  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2+-777bb4?logo=php&logoColor=white" alt="PHP Support"></a>
+  <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/PHPStan-Level%20Max-8b5cf6?logo=php&logoColor=white" alt="PHPStan Level Max"></a>
 </p>
 
 </div>
+
+---
+
+**Laravel Actionable Diagnostics** is a multichannel diagnostic event engine and actionable exception taxonomy framework for PHP 8.2+ and Laravel applications. It bridges runtime observability with automated AI remediation by turning exceptions and log events into structured, actionable problem definitions with step-by-step resolution prompts.
 
 ---
 
@@ -29,8 +37,8 @@
 
 ## Requirements
 
-* **PHP:** ^8.2 (tested on 8.2, 8.3, 8.4)
-* **Laravel Framework:** ^10.0 || ^11.0 || ^12.0 || ^13.0
+* **PHP:** 8.2+ (tested on 8.2, 8.3, 8.4)
+* **Laravel Framework:** 11.x | 12.x | 13.x
 
 ---
 
@@ -147,12 +155,10 @@ try {
 Run unit and integration test suites:
 
 ```bash
+# Run test suite
 php artisan test -c packages/alex-local/laravel-actionable-diagnostics/phpunit.xml
-```
 
-Run static analysis:
-
-```bash
+# Run static analysis
 vendor/bin/phpstan analyse packages/alex-local/laravel-actionable-diagnostics/src --level=max
 ```
 
