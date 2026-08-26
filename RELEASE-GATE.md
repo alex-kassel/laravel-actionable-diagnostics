@@ -10,7 +10,7 @@
 | Attribute | Certified Value |
 |---|---|
 | **Package Name** | `alex-kassel/laravel-actionable-diagnostics` |
-| **Target Release Version** | `1.0.2` |
+| **Target Release Version** | `1.0.3` |
 | **Target Branch / Commit** | `main` (`af29dee`) |
 | **Release Verdict** | 🟢 **READY FOR RELEASE** |
 | **Audit Framework Version** | `1.0.13` |
@@ -73,7 +73,7 @@ OK (8 tests, 34 assertions)
 {
   "audit_run": ".audit/runs/alex-kassel/laravel-actionable-diagnostics/latest/",
   "package": "alex-kassel/laravel-actionable-diagnostics",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "commit": "af29dee",
   "framework": "https://github.com/alex-kassel/laravel-package-audit",
   "framework_version": "1.0.13",
