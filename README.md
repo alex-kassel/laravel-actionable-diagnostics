@@ -7,7 +7,7 @@
 <p align="center">
   <a href="#installation">Installation</a> •
   <a href="#configuration">Configuration</a> •
-  <a href="#quick-start">Quick Start</a> •
+  <a href="#usage">Usage</a> •
   <a href="RELEASE-GATE.md">Release Gate</a> •
   <a href="CHANGELOG.md">Changelog</a>
 </p>
@@ -15,7 +15,7 @@
 <p align="center">
   <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/Audit-Verified-10b981?logo=shield" alt="Audit Verified"></a>
   <a href="https://packagist.org/packages/alex-kassel/laravel-actionable-diagnostics"><img src="https://img.shields.io/packagist/v/alex-kassel/laravel-actionable-diagnostics?color=f59e0b&logo=packagist&logoColor=white" alt="Latest Version"></a>
-  <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11%20%7C%2012%20%7C%2013-ff2d20?logo=laravel&logoColor=white" alt="Laravel Support"></a>
+  <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-10%20%7C%2011%20%7C%2012%20%7C%2013-ff2d20?logo=laravel&logoColor=white" alt="Laravel Support"></a>
   <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.2+-777bb4?logo=php&logoColor=white" alt="PHP Support"></a>
   <a href="RELEASE-GATE.md"><img src="https://img.shields.io/badge/PHPStan-Level%20Max-8b5cf6?logo=php&logoColor=white" alt="PHPStan Level Max"></a>
 </p>
@@ -39,8 +39,8 @@
 
 ## Requirements
 
-* **PHP:** 8.2+ (tested on 8.2, 8.3, 8.4)
-* **Laravel Framework:** 11.x | 12.x | 13.x
+* **PHP:** 8.2+ (tested on 8.2, 8.3, 8.4, 8.5)
+* **Laravel Framework:** 10.x | 11.x | 12.x | 13.x
 
 ---
 
@@ -103,7 +103,7 @@ return [
 
 ---
 
-## Quick Start
+## Usage
 
 ### 1. Recording Recoverable / Operational Events
 
@@ -154,14 +154,10 @@ try {
 
 ## Testing
 
-Run unit and integration test suites:
+From the monorepo root, run the complete package verification pipeline:
 
 ```bash
-# Run test suite
-php artisan test -c packages/alex-local/laravel-actionable-diagnostics/phpunit.xml
-
-# Run static analysis
-vendor/bin/phpstan analyse packages/alex-local/laravel-actionable-diagnostics/src --level=max
+composer pkg:check alex-kassel/laravel-actionable-diagnostics --json
 ```
 
 ---
